@@ -202,13 +202,6 @@ OLLAMA_ORIGINS="*" ollama serve
 
 Solution: Check browser permissions and file size limits
 
-### Performance Tips
-
--   Close other resource‑intensive applications
--   Ensure sufficient RAM (8GB+ recommended)
--   Use SSD storage
--   Consider a quantized model for lower resource usage
-
 ## 📊 System Requirements
 
 ### Minimum
@@ -222,30 +215,3 @@ Solution: Check browser permissions and file size limits
 -   16GB+ RAM
 -   8GB+ storage
 -   Multi-core CPU
-
-## 🔮 Future Enhancements
-
--   Multiple model support
--   Advanced file processing (OCR, PDF extraction)
--   Conversation export
--   Prompt templates
--   Voice I/O
--   Mobile app
-
-## 🤝 Contributing
-
-Contributions are welcome. Ensure:
-
--   No external services
--   All data remains local
--   No telemetry
-
-## 📄 License
-
-MIT License.
-
-## 🙏 Acknowledgments
-
--   Ollama
--   Gamma 3
--   React
