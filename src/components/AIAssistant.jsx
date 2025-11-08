@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import './styles.css';
+import './AIAssistant.css';
 
 const AIAssistant = () => {
   const [prompt, setPrompt] = useState('');
