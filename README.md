@@ -1,5 +1,4 @@
-- uses gemma3:1b
-- just run ollama run gemma3:1b 
+- ollama run gemma3:1b 
 
 # Local AI Assistant
 
