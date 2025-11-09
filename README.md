@@ -1,3 +1,6 @@
+- uses gemma3:1b
+- just run ollama run gemma3:1b 
+
 # Local AI Assistant
 
 A secure, privacy-focused AI chatbot application that runs entirely on
