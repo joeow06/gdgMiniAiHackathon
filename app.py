@@ -8,6 +8,9 @@ st.title("💬 Gemma 3 Local Chatbot")
 # Input prompt for the chatbot
 prompt = st.text_area("Enter your prompt:")
 
+# For Stream Effect
+chat_placeholder = st.empty()
+
 # Button to generate response
 if st.button("Generate"):
     with st.spinner("Generating response..."):
@@ -28,8 +31,9 @@ if st.button("Generate"):
                     if "response" in obj:
                         full_output += obj["response"]
 
-                print(full_output)
-                st.write(full_output)
+                        chat_placeholder.text(
+                            full_output
+                        )  # Writes the response in the same row, instead of making new ones
 
             else:
                 st.error(f"Generation failed: {response.status_code} - {response.text}")
