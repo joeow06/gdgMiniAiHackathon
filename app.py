@@ -33,7 +33,7 @@ if st.button("Generate"):
 
                         chat_placeholder.text(
                             full_output
-                        )  # Writes the response in the same row, instead of making new ones
+                        )  # Writes the response in the same row
 
             else:
                 st.error(f"Generation failed: {response.status_code} - {response.text}")
