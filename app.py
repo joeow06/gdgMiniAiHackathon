@@ -3,6 +3,8 @@ import json
 import requests
 import streamlit as st
 
+import chroma
+
 st.title("💬 Gemma 3 Local Chatbot")
 
 # Input prompt for the chatbot
@@ -11,14 +13,22 @@ prompt = st.text_area("Enter your prompt:")
 # For Stream Effect
 chat_placeholder = st.empty()
 
+# Reset Database
+if st.button("Reset"):
+    chroma.ClearCollection()
+
 # Button to generate response
 if st.button("Generate"):
     with st.spinner("Generating response..."):
         try:
+            # Get Results from Chroma First
+            chromaResults = chroma.QueryResults(prompt)
+            st.write("The results for the prompt is ", chromaResults)
+
             # Send a POST request to generate the response based on the model and prompt
             response = requests.post(
                 "http://localhost:11434/api/generate",
-                json={"model": "gemma3:1b", "prompt": prompt},
+                json={"model": "gemma3:1b", "prompt": prompt, "stream": False},
             )
 
             #  Successful Response -> Get the Stream, Compile as One Text
@@ -34,6 +44,12 @@ if st.button("Generate"):
                         chat_placeholder.text(
                             full_output
                         )  # Writes the response in the same row
+
+                # Store Conversation
+                userInput = f"User: {prompt}"
+                botInput = f"Bot: {full_output}"
+                chroma.UpdateChatHistory(userInput)
+                chroma.UpdateChatHistory(botInput)
 
             else:
                 st.error(f"Generation failed: {response.status_code} - {response.text}")

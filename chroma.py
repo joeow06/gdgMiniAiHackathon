@@ -1,19 +1,28 @@
+import uuid
+
 import chromadb
 
-chroma_client = chromadb.Client()
+COLLECTIONNAME = "ChatHistory"
 
-collection = chroma_client.get_or_create_collection(name="Test_Collection")
+# Path for Client and The Local Storage
+chroma_client = chromadb.PersistentClient(path="./chroma_client")
+chatHistory = chroma_client.get_or_create_collection(name=COLLECTIONNAME)
 
 
+# Update Persistent Chat Record, Stored in Random ID
+def UpdateChatHistory(conversationDetails):
+    id = str(uuid.uuid4())
+    chatHistory.upsert(documents=str(conversationDetails), ids=id)
 
-# Update Database
-collection.upsert(
-    documents=["This is a document about dogs", "this is a document about cats"],
-    ids=["id1", "id2"],
-)
 
-results = collection.query(
-    query_texts=["This is a query document about animals"], n_results=2
-)
+def QueryResults(prompt):
+    results = chatHistory.query(query_texts=[prompt])
+    return results
 
-print(results)
+
+def ClearCollection():
+    allIds = chatHistory.get()["ids"]
+    if len(allIds) > 0:
+        chatHistory.delete(ids=allIds)
+        print("Reset Collection")
+    print("Nothing to Delete")
