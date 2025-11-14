@@ -16,7 +16,16 @@ def UpdateChatHistory(conversationDetails):
 
 
 def QueryResults(prompt):
-    results = chatHistory.query(query_texts=[prompt])
+    results = chatHistory.query(
+        query_texts=[prompt],
+        n_results=3,
+    )
+
+    # No Data Yet
+    if len(results["ids"][0]) <= 0:
+        print("The result IDs are ", results["ids"])
+        return ""
+
     return results
 
 
@@ -24,5 +33,5 @@ def ClearCollection():
     allIds = chatHistory.get()["ids"]
     if len(allIds) > 0:
         chatHistory.delete(ids=allIds)
-        print("Reset Collection")
-    print("Nothing to Delete")
+    else:
+        print("Nothing to Delete")

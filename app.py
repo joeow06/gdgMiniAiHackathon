@@ -25,10 +25,20 @@ if st.button("Generate"):
             chromaResults = chroma.QueryResults(prompt)
             st.write("The results for the prompt is ", chromaResults)
 
+            # Prompt Engineering (Real)
+            processedPrompt = f"""Context (facts about the user):
+            {chromaResults}
+
+            Current user message:
+            {prompt}
+
+            Instruction:
+            Use ONLY the context to answer questions about the user. Do not refer to yourself as the user. You are the assistant responding to the user"""
+
             # Send a POST request to generate the response based on the model and prompt
             response = requests.post(
                 "http://localhost:11434/api/generate",
-                json={"model": "gemma3:1b", "prompt": prompt, "stream": False},
+                json={"model": "gemma3:1b", "prompt": processedPrompt, "stream": False},
             )
 
             #  Successful Response -> Get the Stream, Compile as One Text
@@ -45,11 +55,9 @@ if st.button("Generate"):
                             full_output
                         )  # Writes the response in the same row
 
-                # Store Conversation
-                userInput = f"User: {prompt}"
-                botInput = f"Bot: {full_output}"
-                chroma.UpdateChatHistory(userInput)
-                chroma.UpdateChatHistory(botInput)
+                # Store Conversation (Crude)
+                userInput = {"text": prompt}
+                chroma.UpdateChatHistory(json.dumps(userInput))
 
             else:
                 st.error(f"Generation failed: {response.status_code} - {response.text}")
